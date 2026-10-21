@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CurvaLab Studio — Graficador matemático</title>
+<style>
+:root{color-scheme:dark;--bg:#070b17;--panel:#10182b;--panel2:#141f36;--line:#263653;--text:#eef4ff;--muted:#9aacca;--cyan:#5ee7ff;--violet:#9b8cff;--pink:#ff65b5;--green:#55e6a5;--orange:#ffbf69}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 10% 0%,#1a2c55 0,transparent 38%),radial-gradient(ellipse at 95% 15%,#351844 0,transparent 30%),var(--bg);color:var(--text);font:15px/1.5 Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;min-height:100vh}
+header{padding:25px clamp(16px,4vw,52px);border-bottom:1px solid #ffffff12;background:#080d1ddd;backdrop-filter:blur(18px)}.brand{max-width:1600px;margin:auto;display:flex;align-items:center;gap:14px}.logo{width:52px;height:52px;display:grid;place-items:center;border-radius:16px;background:linear-gradient(135deg,var(--cyan),var(--violet));color:#091022;font-weight:900;font-size:23px;box-shadow:0 0 32px #5ee7ff33}.brand h1{margin:0;font-size:clamp(1.4rem,3vw,2.25rem);letter-spacing:-.045em}.brand p{margin:3px 0 0;color:var(--muted)}.pill{margin-left:auto;padding:6px 10px;border:1px solid #55e6a544;border-radius:99px;color:var(--green);font-size:.78rem;white-space:nowrap}
+main{max-width:1600px;margin:22px auto;padding:0 18px 30px;display:grid;grid-template-columns:minmax(280px,365px) minmax(0,1fr);gap:18px}.panel{min-width:0;background:linear-gradient(145deg,#111a2eee,#0d1426f5);border:1px solid var(--line);border-radius:22px;padding:20px;box-shadow:0 18px 55px #0003}.panel h2{font-size:1.05rem;margin:0 0 14px;letter-spacing:-.02em}.field-label{display:block;color:#dce6ff;font-weight:750;font-size:.86rem;margin:13px 0 7px}input,select,textarea,button{font:inherit}input,select,textarea{width:100%;padding:11px 12px;color:var(--text);background:#080f20;border:1px solid #30405e;border-radius:10px;outline:none}input:focus,select:focus,textarea:focus{border-color:var(--cyan);box-shadow:0 0 0 3px #5ee7ff1b}textarea{resize:vertical;min-height:112px;font: .96rem/1.7 ui-monospace,SFMono-Regular,Consolas,monospace;tab-size:2}.hint{font-size:.8rem;color:var(--muted);margin:7px 0;line-height:1.5}.hint code{color:var(--cyan);background:#07101f;padding:2px 4px;border-radius:4px}
+button{border:1px solid transparent;border-radius:10px;padding:9px 11px;cursor:pointer;font-weight:750;transition:transform .15s,filter .15s,border-color .15s}button:hover{filter:brightness(1.13);transform:translateY(-1px)}button:active{transform:none}.primary{width:100%;margin-top:12px;padding:12px;color:#07101f;background:linear-gradient(100deg,var(--cyan),#8fa4ff 58%,var(--violet));box-shadow:0 8px 25px #5ee7ff1b}.secondary{background:#192540;color:#e2ebff;border-color:#2d3d5d}.danger{background:#2a1727;color:#ffb5d8;border-color:#65344f}.examples{display:grid;grid-template-columns:1fr 1fr;gap:7px}.examples button{font-size:.8rem;text-align:left;background:#141f36;border-color:#293a5b;color:#dbe7ff}.examples button span{display:block;color:var(--cyan);font-size:.68rem;letter-spacing:.06em;margin-bottom:3px}.section-caption{font-size:.72rem;text-transform:uppercase;letter-spacing:.14em;color:#8194b9;font-weight:850;margin:22px 0 8px}.row{display:flex;gap:8px;align-items:center}.row>*{flex:1;min-width:0}.checkrow{display:flex;gap:8px;align-items:center;color:var(--muted);font-size:.83rem;margin-top:12px}.checkrow input{width:auto;accent-color:var(--cyan)}.status{margin-top:12px;padding:11px 12px;border:1px solid #2b4660;border-radius:11px;font-size:.84rem;line-height:1.5;white-space:pre-wrap;background:#0a1425;color:#bcefff}.ok{border-color:#245b52;background:#0d2828;color:#91f7cf}.err{border-color:#78394f;background:#2a1423;color:#ffb4cb}.graph-panel{padding:17px}.graph-head{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:13px}.graph-title{display:flex;align-items:center;gap:10px}.graph-title h2{margin:0;font-size:1.12rem}.live-dot{width:9px;height:9px;border-radius:50%;background:var(--green);box-shadow:0 0 14px var(--green)}.actions{display:flex;gap:6px;flex-wrap:wrap}.actions button{font-size:.8rem;padding:8px 10px}.canvas-wrap{position:relative}.canvas-wrap:after{content:"";position:absolute;inset:0;pointer-events:none;border-radius:14px;box-shadow:inset 0 0 0 1px #34415d}.canvas-wrap canvas{display:block;width:100%;aspect-ratio:1/1;max-height:78vh;border-radius:14px;background:#080f1d;cursor:grab;touch-action:none}.canvas-wrap canvas.dragging{cursor:grabbing;user-select:none}.graph-footer{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-top:11px}.legend{display:flex;gap:9px;align-items:center;flex-wrap:wrap;color:var(--muted);font-size:.79rem}.legend-item{display:flex;align-items:center;gap:6px}.swatch{display:inline-block;width:17px;height:3px;border-radius:5px}.coords{font: .8rem ui-monospace,monospace;color:var(--cyan);background:#081020;border:1px solid #223653;border-radius:8px;padding:6px 9px}.bottom-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:15px}.mini-card{border:1px solid #263653;background:#0b1324;border-radius:13px;padding:13px}.mini-card h3{margin:0 0 7px;font-size:.85rem}.mini-card p{margin:0;color:var(--muted);font-size:.8rem;line-height:1.55}.mini-card strong{color:var(--text)}.help-list{margin:8px 0 0;padding-left:19px;color:var(--muted);font-size:.82rem;line-height:1.7}.help-list code{color:var(--cyan)}.footer-note{max-width:1600px;margin:0 auto;padding:0 18px 24px;color:#7e90b2;font-size:.78rem}
+@media(max-width:980px){main{grid-template-columns:1fr}.graph-panel{order:-1}.canvas-wrap canvas{max-height:none}}@media(max-width:520px){header{padding:18px 13px}.logo{width:43px;height:43px}.pill{display:none}main{padding:0 10px 20px;margin-top:12px;gap:12px}.panel{padding:14px;border-radius:17px}.actions{width:100%}.actions button{flex:1}.bottom-grid{grid-template-columns:1fr}.examples{grid-template-columns:1fr 1fr}}
+</style></head>
+<body>
+<header><div class="brand"><div class="logo">ƒx</div><div><h1>CurvaLab <span style="color:var(--cyan)">Studio</span></h1><p>Laboratorio interactivo de ecuaciones y curvas algebraicas.</p></div><div class="pill">● LISTO PARA GRAFICAR</div></div></header>
+<main>
+<section class="panel">
+  <h2>✦ Editor de ecuaciones</h2>
+  <label class="field-label" for="equations">Una ecuación por línea</label>
+  <textarea id="equations" spellcheck="false">x^2 + y^2 = 25</textarea>
+  <p class="hint">Puedes graficar varias curvas al mismo tiempo. Escribe una igualdad por línea.</p>
+  <button id="plot" class="primary">▶ Graficar curvas</button>
+  <div id="status" class="status ok" role="status">Listo. Presiona “Graficar curvas” para comenzar.</div>
+  <div class="section-caption">Galería de ejemplos</div>
+  <div class="examples">
+    <button data-eq="x^2 + y^2 = 25"><span>01 · CIRCUNFERENCIA</span>x² + y² = 25</button>
+    <button data-eq="y = x^2"><span>02 · PARÁBOLA</span>y = x²</button>
+    <button data-eq="x^2/16 + y^2/9 = 1"><span>03 · ELIPSE</span>x²/16 + y²/9 = 1</button>
+    <button data-eq="x^2/16 - y^2/9 = 1"><span>04 · HIPÉRBOLA</span>x²/16 − y²/9 = 1</button>
+    <button data-eq="x^6 + y^6 = 16"><span>05 · POTENCIA 6</span>x⁶ + y⁶ = 16</button>
+    <button data-eq="y = x^(1/3)"><span>06 · POTENCIA FRACCIONARIA</span>y = x^(1/3)</button>
+    <button data-eq="y = 1/x"><span>07 · RECÍPROCA</span>y = 1/x</button>
+    <button data-eq="y = sin(x)"><span>08 · TRIGONOMÉTRICA</span>y = sin(x)</button>
+    <button data-eq="y = cos(x)"><span>09 · COSENO</span>y = cos(x)</button>
+    <button data-eq="(x-2)^2 + (y+1)^2 = 9"><span>10 · DESPLAZADA</span>(x−2)² + (y+1)² = 9</button>
+  </div>
+  <div class="section-caption">Diseña una forma con coordenadas</div>
+  <label class="field-label" for="pointsInput">Puntos (x, y), uno por línea</label>
+  <textarea id="pointsInput" spellcheck="false">-4,-2
+-2,2
+0,4
+2,2
+4,-2</textarea>
+  <p class="hint">Escribe coordenadas como <code>0,0</code> o <code>0 0</code>. El programa une los puntos en el orden indicado. Puedes crear polígonos, letras, estrellas y dibujos sencillos.</p>
+  <label class="checkrow"><input id="closeShape" type="checkbox" checked> Cerrar la figura (unir el último punto con el primero)</label>
+  <label class="checkrow"><input id="showPoints" type="checkbox" checked> Mostrar puntos de coordenadas</label>
+  <div class="row" style="margin-top:9px">
+    <button id="drawPoints" class="secondary">✦ Dibujar forma</button>
+    <button id="clearPoints" class="secondary">Borrar forma</button>
+  </div>
+  <p class="hint">Ejemplo de triángulo: <code>0,3</code>, <code>-3,-2</code>, <code>3,-2</code>.</p>
+  <div class="section-caption">Vista y precisión</div>
+  <div class="row">
+    <div><label class="field-label" for="range">Rango ±</label><input id="range" type="number" value="10" min="1" max="1000" step="1"></div>
+    <div><label class="field-label" for="resolution">Resolución</label><select id="resolution"><option value="120">Rápida</option><option value="200" selected>Normal</option><option value="300">Alta</option><option value="420">Muy alta</option></select></div>
+  </div>
+  <label class="field-label" for="lineWidth">Grosor de curva</label><input id="lineWidth" type="range" min="1" max="5" value="2"><p class="hint">Grosor: <span id="lineWidthValue">2</span> px</p>
+  <div class="row"><button id="zoomIn" class="secondary">＋ Acercar</button><button id="zoomOut" class="secondary">－ Alejar</button></div>
+  <div class="row" style="margin-top:8px"><button id="reset" class="secondary">↺ Restablecer</button><button id="export" class="secondary">↓ Guardar PNG</button></div>
+  <label class="checkrow"><input id="showGrid" type="checkbox" checked> Mostrar cuadrícula</label>
+  <label class="checkrow"><input id="showLabels" type="checkbox" checked> Mostrar números de los ejes</label>
+  <div class="section-caption">Guía de escritura</div>
+  <ul class="help-list">
+    <li>Potencias: <code>x^12</code>, <code>y^(-2)</code>, <code>x^(1/3)</code>.</li>
+    <li>Operaciones: <code>+ - * / ^</code> y paréntesis.</li>
+    <li>Multiplicación opcional: <code>2x</code>, <code>3(x+1)</code>.</li>
+    <li>Funciones: <code>sin(x)</code>, <code>cos(x)</code>, <code>tan(x)</code>, <code>sqrt(x)</code>, <code>abs(x)</code>, <code>ln(x)</code>, <code>log(x)</code>, <code>exp(x)</code>.</li>
+    <li>Constantes: <code>pi</code> y <code>e</code>. En funciones trigonométricas se usan radianes.</li>
+  </ul>
+</section>
+<section class="panel graph-panel">
+  <div class="graph-head"><div class="graph-title"><span class="live-dot"></span><h2>Plano cartesiano</h2></div><div class="actions"><button id="clear" class="secondary">Limpiar curvas</button></div></div>
+  <div class="canvas-wrap"><canvas id="graph" width="1000" height="1000" aria-label="Plano cartesiano interactivo"></canvas></div>
+  <div class="graph-footer"><div id="legend" class="legend"></div><div id="coords" class="coords">x: — · y: —</div></div>
+  <div class="bottom-grid">
+    <div class="mini-card"><h3>⌖ Coordenadas</h3><p>Arrastra el plano con el ratón o con el dedo para moverlo a tu voluntad. Usa la rueda o pellizca/desliza según tu dispositivo para ajustar la vista; mueve el cursor para leer coordenadas. Las figuras por puntos se mantienen en sus coordenadas.</p></div>
+    <div class="mini-card"><h3>∿ Precisión matemática</h3><p>Las curvas implícitas se calculan numéricamente. En exponentes fraccionarios, divisiones por cero o regiones fuera del dominio real pueden aparecer huecos.</p></div>
+  </div>
+</section>
+</main>
+<div class="footer-note">CurvaLab Studio · Herramienta educativa. Los resultados son aproximaciones visuales, no una demostración simbólica de la ecuación.</div>
+<script>
+(() => {
+const canvas=document.getElementById('graph'),ctx=canvas.getContext('2d');
+const eqInput=document.getElementById('equations'),rangeInput=document.getElementById('range'),resInput=document.getElementById('resolution'),status=document.getElementById('status'),legend=document.getElementById('legend'),coords=document.getElementById('coords');
+let viewRange=10,viewCenterX=0,viewCenterY=0,currentEquations=['x^2 + y^2 = 25'],lastFunctions=[],lastColors=[],lastMouse=null,coordinatePoints=[],dragState=null;
+const colors=['#ff65b5','#5ee7ff','#a995ff','#55e6a5','#ffbf69','#ff7c83','#7ce7d4','#d5f56d'];
+const clamp=(v)=>Number.isFinite(v)?Math.max(-1e90,Math.min(1e90,v)):NaN;
+
+function tokenize(text){
+ let raw=[],i=0;
+ while(i<text.length){
+  if(/\s/.test(text[i])){i++;continue}
+  let rest=text.slice(i),m=rest.match(/^(?:\d+\.?\d*|\.\d+)(?:e[+-]?\d+)?/i);
+  if(m){raw.push({t:'num',v:Number(m[0])});i+=m[0].length;continue}
+  m=rest.match(/^[a-zA-Z_][a-zA-Z_0-9]*/);
+  if(m){let name=m[0].toLowerCase();if(['x','y'].includes(name))raw.push({t:'var',v:name});else if(['pi','e','sin','cos','tan','asin','acos','atan','sqrt','abs','ln','log','exp','floor','ceil'].includes(name))raw.push({t:'name',v:name});else throw Error('Nombre no reconocido: '+name);i+=m[0].length;continue}
+  if('+-*/^()'.includes(text[i])){raw.push({t:text[i],v:text[i]});i++;continue}
+  throw Error('Símbolo no válido: '+text[i]);
+ }
+ let out=[];const end=t=>t&&(['num','var','name',')'].includes(t.t));const start=t=>t&&(['num','var','name','('].includes(t.t));
+ for(let k=0;k<raw.length;k++){let t=raw[k],p=out[out.length-1];
+  // A function name followed by '(' is a call, not multiplication.
+  if(end(p)&&start(t)&&!(p.t==='name'&&['sin','cos','tan','asin','acos','atan','sqrt','abs','ln','log','exp','floor','ceil'].includes(p.v)&&t.t==='('))out.push({t:'*',v:'*'});
+  out.push(t);
+ }
+ return out;
+}
+function parse(text){
+ const ts=tokenize(text);let p=0;const peek=()=>ts[p],take=t=>{if(!peek()||peek().t!==t)throw Error('Revisa operadores o paréntesis.');return ts[p++]};
+ function primary(){
+  if(peek()?.t==='+'){take('+');return primary()}
+  if(peek()?.t==='-'){take('-');return {k:'neg',a:primary()}}
+  if(peek()?.t==='num')return {k:'num',v:take('num').v}
+  if(peek()?.t==='var')return {k:'var',v:take('var').v}
+  if(peek()?.t==='name'){
+   let name=take('name').v;
+   if(['pi','e'].includes(name))return {k:'const',v:name};
+   take('(');let a=add();take(')');return {k:'fn',v:name,a};
+  }
+  if(peek()?.t==='('){take('(');let a=add();take(')');return a}
+  throw Error('Se esperaba un número, variable o función.');
+ }
+ function power(){let a=primary();if(peek()?.t==='^'){take('^');a={k:'pow',a,b:unary()}}return a}
+ function unary(){if(peek()?.t==='+'){take('+');return unary()}if(peek()?.t==='-'){take('-');return {k:'neg',a:unary()}}return power()}
+ function mul(){let a=unary();while(peek()&&['*','/'].includes(peek().t)){let op=ts[p++].t;a={k:op,a,b:unary()}}return a}
+ function add(){let a=mul();while(peek()&&['+','-'].includes(peek().t)){let op=ts[p++].t;a={k:op,a,b:mul()}}return a}
+ if(!ts.length)throw Error('Escribe una expresión.');let tree=add();if(p!==ts.length)throw Error('No se pudo interpretar la expresión.');return tree;
+}
+function ev(n,x,y){
+ let a,b,r;
+ switch(n.k){
+ case'num':return n.v;case'const':return n.v==='pi'?Math.PI:Math.E;case'var':return n.v==='x'?x:y;case'neg':return -ev(n.a,x,y);
+ case'pow':a=ev(n.a,x,y);b=ev(n.b,x,y);if(a<0&&Number.isFinite(b)&&Math.abs(b-Math.round(b))>1e-10)return NaN;r=Math.pow(a,b);return clamp(r);
+ case'fn':a=ev(n.a,x,y);switch(n.v){case'sin':return Math.sin(a);case'cos':return Math.cos(a);case'tan':return Math.tan(a);case'asin':return Math.asin(a);case'acos':return Math.acos(a);case'atan':return Math.atan(a);case'sqrt':return Math.sqrt(a);case'abs':return Math.abs(a);case'ln':return Math.log(a);case'log':return Math.log10(a);case'exp':return Math.exp(a);case'floor':return Math.floor(a);case'ceil':return Math.ceil(a)}
+ case'+':a=ev(n.a,x,y);b=ev(n.b,x,y);return clamp(a+b);case'-':a=ev(n.a,x,y);b=ev(n.b,x,y);return clamp(a-b);case'*':a=ev(n.a,x,y);b=ev(n.b,x,y);return clamp(a*b);case'/':a=ev(n.a,x,y);b=ev(n.b,x,y);return b===0?NaN:clamp(a/b);
+ }return NaN;
+}
+function compile(eq){
+ let parts=eq.split('=');if(parts.length!==2||!parts[0].trim()||!parts[1].trim())throw Error('Cada línea debe tener una igualdad, por ejemplo y=x^2.');
+ let a=parse(parts[0]),b=parse(parts[1]);
+ return (x,y)=>{let u=ev(a,x,y),v=ev(b,x,y);if(!Number.isFinite(u)||!Number.isFinite(v))return NaN;let scale=Math.max(1,Math.abs(u),Math.abs(v));return u/scale-v/scale};
+}
+function grid(){
+ const w=canvas.width,h=canvas.height,r=viewRange,sx=x=>(x-(viewCenterX-r))/(2*r)*w,sy=y=>(viewCenterY+r-y)/(2*r)*h;
+ ctx.clearRect(0,0,w,h);ctx.fillStyle='#080f1d';ctx.fillRect(0,0,w,h);
+ let step=r<=10?1:r<=25?2:r<=60?5:r<=150?10:Math.pow(10,Math.floor(Math.log10(r/8)));
+ if(document.getElementById('showGrid').checked){
+  ctx.strokeStyle='#1b2942';ctx.lineWidth=1;
+  for(let v=Math.ceil(-r/step)*step;v<=r;v+=step){ctx.beginPath();ctx.moveTo(sx(v),0);ctx.lineTo(sx(v),h);ctx.stroke();ctx.beginPath();ctx.moveTo(0,sy(v));ctx.lineTo(w,sy(v));ctx.stroke()}
+ }
+ ctx.strokeStyle='#6c829f';ctx.lineWidth=2;
+ ctx.beginPath();ctx.moveTo(0,sy(0));ctx.lineTo(w,sy(0));ctx.stroke();ctx.beginPath();ctx.moveTo(sx(0),0);ctx.lineTo(sx(0),h);ctx.stroke();
+ ctx.fillStyle='#9eb0cd';ctx.font='16px system-ui';
+ ctx.fillText('x',w-22,sy(0)-9);ctx.fillText('y',sx(0)+9,20);
+ if(document.getElementById('showLabels').checked){ctx.font='13px system-ui';ctx.textAlign='center';ctx.textBaseline='top';for(let v=Math.ceil(-r/step)*step;v<=r;v+=step)if(v!==0)ctx.fillText(String(Number(v.toPrecision(4))),sx(v),sy(0)+6);ctx.textAlign='right';ctx.textBaseline='middle';for(let v=Math.ceil(-r/step)*step;v<=r;v+=step)if(v!==0)ctx.fillText(String(Number(v.toPrecision(4))),sx(0)-7,sy(v));ctx.textAlign='start';ctx.textBaseline='alphabetic'}
+ return {sx,sy};
+}
+function crossing(x1,y1,v1,x2,y2,v2){
+ if(!Number.isFinite(v1)||!Number.isFinite(v2))return null;
+ if(v1===0&&v2===0)return null;if(v1!==0&&v2!==0&&Math.sign(v1)===Math.sign(v2))return null;
+ let den=v1-v2;if(!Number.isFinite(den)||den===0)return null;let t=Math.max(0,Math.min(1,v1/den));return [x1+t*(x2-x1),y1+t*(y2-y1)];
+}
+function drawCurve(f,color,n,sx,sy){
+ const r=viewRange,dx=2*r/n,dy=dx,vals=Array.from({length:n+1},()=>new Float64Array(n+1));
+ for(let j=0;j<=n;j++){let y=r-j*dy;for(let i=0;i<=n;i++)vals[j][i]=f(-r+i*dx,y)}
+ ctx.strokeStyle=color;ctx.lineWidth=Number(document.getElementById('lineWidth').value);ctx.lineCap='round';ctx.lineJoin='round';ctx.beginPath();
+ for(let j=0;j<n;j++)for(let i=0;i<n;i++){
+  const x=-r+i*dx,y=r-j*dy;
+  let vv=[vals[j][i],vals[j][i+1],vals[j+1][i+1],vals[j+1][i]];
+  let pts=[crossing(x,y,vv[0],x+dx,y,vv[1]),crossing(x+dx,y,vv[1],x+dx,y-dy,vv[2]),crossing(x+dx,y-dy,vv[2],x,y-dy,vv[3]),crossing(x,y-dy,vv[3],x,y,vv[0])].filter(Boolean);
+  if(pts.length===2){ctx.moveTo(sx(pts[0][0]),sy(pts[0][1]));ctx.lineTo(sx(pts[1][0]),sy(pts[1][1]))}
+  else if(pts.length===4){let center=f(x+dx/2,y-dy/2);if(Number.isFinite(center)&&Math.sign(center)===Math.sign(vv[0])){[[0,3],[1,2]].forEach(pair=>{ctx.moveTo(sx(pts[pair[0]][0]),sy(pts[pair[0]][1]));ctx.lineTo(sx(pts[pair[1]][0]),sy(pts[pair[1]][1]))})}else{[[0,1],[2,3]].forEach(pair=>{ctx.moveTo(sx(pts[pair[0]][0]),sy(pts[pair[0]][1]));ctx.lineTo(sx(pts[pair[1]][0]),sy(pts[pair[1]][1]))})}}
+ }
+ ctx.stroke();
+}
+function readCoordinatePoints(){
+  const raw=document.getElementById('pointsInput').value.split(/\n/).map(s=>s.trim()).filter(Boolean);
+  const pts=[];
+  for(let i=0;i<raw.length;i++){
+    const line=raw[i].replace(/[()]/g,'').trim();
+    const parts=line.split(/[,;\s]+/).filter(Boolean);
+    if(parts.length!==2)throw Error(`Coordenada inválida en la línea ${i+1}. Usa el formato x,y; por ejemplo: 2,3.`);
+    const x=Number(parts[0]),y=Number(parts[1]);
+    if(!Number.isFinite(x)||!Number.isFinite(y))throw Error(`La línea ${i+1} debe contener dos números válidos.`);
+    pts.push({x,y});
+  }
+  if(pts.length===1)throw Error('Agrega al menos dos puntos para formar una línea o figura.');
+  return pts;
+}
+function drawCoordinateShape(sx,sy){
+  if(coordinatePoints.length<2)return;
+  const close=document.getElementById('closeShape').checked;
+  const show=document.getElementById('showPoints').checked;
+  ctx.save();
+  ctx.strokeStyle='#ffbf69';ctx.fillStyle='#ffbf69';ctx.lineWidth=Math.max(2,Number(document.getElementById('lineWidth').value)+1);
+  ctx.lineCap='round';ctx.lineJoin='round';ctx.beginPath();
+  ctx.moveTo(sx(coordinatePoints[0].x),sy(coordinatePoints[0].y));
+  for(let i=1;i<coordinatePoints.length;i++)ctx.lineTo(sx(coordinatePoints[i].x),sy(coordinatePoints[i].y));
+  if(close)ctx.closePath();
+  ctx.stroke();
+  if(close){ctx.globalAlpha=.10;ctx.fillStyle='#ffbf69';ctx.fill();ctx.globalAlpha=1}
+  if(show){
+    coordinatePoints.forEach((p,i)=>{
+      const px=sx(p.x),py=sy(p.y);
+      ctx.beginPath();ctx.arc(px,py,5,0,Math.PI*2);ctx.fillStyle='#ffbf69';ctx.fill();
+      ctx.lineWidth=1.5;ctx.strokeStyle='#fff2d9';ctx.stroke();
+      ctx.font='12px system-ui';ctx.fillStyle='#fff0d2';
+      ctx.fillText(`${i+1} (${p.x}, ${p.y})`,px+8,py-8);
+    });
+  }
+  ctx.restore();
+}
+function redrawAll(){
+  const {sx,sy}=grid();
+  lastFunctions.forEach((f,i)=>drawCurve(f,lastColors[i],Number(resInput.value),sx,sy));
+  drawCoordinateShape(sx,sy);
+  if(lastMouse)updateCoords(lastMouse.x,lastMouse.y);
+}
+function plot(){
+ let equations=eqInput.value.split('\n').map(s=>s.trim()).filter(Boolean);
+ if(!equations.length){status.className='status err';status.textContent='Escribe al menos una ecuación.';return}
+ let fs=[];try{fs=equations.map(compile)}catch(e){status.className='status err';status.textContent=e.message;return}
+ const r=Number(rangeInput.value);if(!Number.isFinite(r)||r<1||r>1000){status.className='status err';status.textContent='El rango debe estar entre 1 y 1000.';return}
+ viewRange=r;currentEquations=equations;lastFunctions=fs;lastColors=fs.map((_,i)=>colors[i%colors.length]);
+ const {sx,sy}=grid(),n=Number(resInput.value);
+ fs.forEach((f,i)=>drawCurve(f,lastColors[i],n,sx,sy));
+  drawCoordinateShape(sx,sy);
+ legend.innerHTML='';equations.forEach((eq,i)=>{let item=document.createElement('span');item.className='legend-item';let sw=document.createElement('i');sw.className='swatch';sw.style.background=lastColors[i];let txt=document.createElement('span');txt.textContent=eq;item.append(sw,txt);legend.append(item)});
+ status.className='status ok';status.textContent=`${equations.length} curva(s) graficada(s).\nVista: x e y de −${viewRange} a ${viewRange}.`;
+ if(lastMouse)updateCoords(lastMouse.x,lastMouse.y);
+}
+function redraw(){redrawAll()}
+function updateCoords(px,py){let rect=canvas.getBoundingClientRect(),x=viewCenterX-viewRange+(px/rect.width)*2*viewRange,y=viewCenterY+viewRange-(py/rect.height)*2*viewRange;coords.textContent=`x: ${x.toFixed(3)} · y: ${y.toFixed(3)}`}
+document.getElementById('drawPoints').addEventListener('click',()=>{
+  try{
+    coordinatePoints=readCoordinatePoints();
+    redrawAll();
+    status.className='status ok';
+    status.textContent=`Forma dibujada con ${coordinatePoints.length} puntos. ${document.getElementById('closeShape').checked?'La figura está cerrada.':'La figura está abierta.'}`;
+  }catch(e){status.className='status err';status.textContent=e.message}
+});
+document.getElementById('clearPoints').addEventListener('click',()=>{
+  coordinatePoints=[];redrawAll();
+  status.className='status';status.textContent='Forma por coordenadas borrada.';
+});
+['closeShape','showPoints'].forEach(id=>document.getElementById(id).addEventListener('change',redrawAll));
+document.getElementById('plot').addEventListener('click',plot);
+document.querySelectorAll('[data-eq]').forEach(b=>b.addEventListener('click',()=>{eqInput.value=b.dataset.eq;plot()}));
+document.getElementById('zoomIn').addEventListener('click',()=>{viewRange=Math.max(.1,viewRange/1.25);rangeInput.value=viewRange;redraw()});
+document.getElementById('zoomOut').addEventListener('click',()=>{viewRange=Math.min(1000,viewRange*1.25);rangeInput.value=viewRange;redraw()});
+document.getElementById('reset').addEventListener('click',()=>{viewRange=10;viewCenterX=0;viewCenterY=0;rangeInput.value=10;eqInput.value='x^2 + y^2 = 25';lastMouse=null;plot()});
+document.getElementById('clear').addEventListener('click',()=>{lastFunctions=[];lastColors=[];coordinatePoints=[];legend.innerHTML='';grid();status.className='status';status.textContent='Curvas y forma borradas. Escribe ecuaciones o coordenadas para graficar de nuevo.'});
+document.getElementById('export').addEventListener('click',()=>{const a=document.createElement('a');a.download='curvalab-grafica.png';a.href=canvas.toDataURL('image/png');a.click()});
+['showGrid','showLabels'].forEach(id=>document.getElementById(id).addEventListener('change',redraw));
+resInput.addEventListener('change',redraw);rangeInput.addEventListener('change',()=>{const r=Number(rangeInput.value);if(Number.isFinite(r)&&r>=1&&r<=1000){viewRange=r;redrawAll()}});document.getElementById('lineWidth').addEventListener('input',e=>{document.getElementById('lineWidthValue').textContent=e.target.value;redraw()});
+canvas.addEventListener('mousemove',e=>{let rect=canvas.getBoundingClientRect();lastMouse={x:e.clientX-rect.left,y:e.clientY-rect.top};updateCoords(lastMouse.x,lastMouse.y)});
+canvas.addEventListener('mouseleave',()=>{lastMouse=null;coords.textContent='x: — · y: —'});
+function pointerPosition(e){const rect=canvas.getBoundingClientRect();return {x:e.clientX-rect.left,y:e.clientY-rect.top}}
+canvas.addEventListener('pointerdown',e=>{
+  if(e.button!==undefined&&e.button!==0)return;
+  const p=pointerPosition(e);
+  dragState={pointerId:e.pointerId,startX:p.x,startY:p.y,centerX:viewCenterX,centerY:viewCenterY,moved:false};
+  canvas.classList.add('dragging');
+  try{canvas.setPointerCapture(e.pointerId)}catch(_){}
+});
+canvas.addEventListener('pointermove',e=>{
+  if(!dragState||dragState.pointerId!==e.pointerId)return;
+  const p=pointerPosition(e),rect=canvas.getBoundingClientRect();
+  const dx=p.x-dragState.startX,dy=p.y-dragState.startY;
+  if(Math.abs(dx)+Math.abs(dy)>2)dragState.moved=true;
+  // Moving the canvas right makes the visible coordinate center move left, and vice versa.
+  viewCenterX=dragState.centerX-dx/rect.width*2*viewRange;
+  viewCenterY=dragState.centerY+dy/rect.height*2*viewRange;
+  redrawAll();
+});
+function endPan(e){
+  if(dragState&&dragState.pointerId===e.pointerId){
+    dragState=null;canvas.classList.remove('dragging');
+  }
+}
+canvas.addEventListener('pointerup',endPan);
+canvas.addEventListener('pointercancel',endPan);
+canvas.addEventListener('lostpointercapture',()=>{dragState=null;canvas.classList.remove('dragging')});
+
+canvas.addEventListener('wheel',e=>{e.preventDefault();let factor=e.deltaY<0?.88:1.14;viewRange=Math.max(.1,Math.min(1000,viewRange*factor));rangeInput.value=Number(viewRange.toFixed(3));redraw()},{passive:false});
+grid();
+try{coordinatePoints=readCoordinatePoints()}catch(e){}
+plot();
+})();
+</script>
+</body></html>
